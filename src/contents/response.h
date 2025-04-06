@@ -89,7 +89,7 @@ enum StatusCode {
 #define OUT_OF_MEMORY                                                          \
   "Memory allocation failed. Possibly out of memory situation"
 
-#define SAFE_SPACE 64
+#define SAFE_SPACE 4096
 char *http_response(u16 statusCode, const char *message,
                     const char *responseType);
 

@@ -12,6 +12,12 @@
 void handle_client(int client_socket, clock_t timer) {
   char buffer[4096];
   int read_size = read(client_socket, buffer, sizeof(buffer) - 1);
+  if (read_size < 0) {
+    perror("read failed");
+    close(client_socket);
+    return;
+  }
+
   buffer[read_size] = '\0';
 
   if (strncmp(buffer, "GET /status ", 12) == 0) {
@@ -22,17 +28,19 @@ void handle_client(int client_socket, clock_t timer) {
     char *body = malloc(RESPONSE_SIZE);
     sprintf(body, "{\"Status\": true, \"Uptime\": %f}\n", uptime * 10000);
     char *response = http_response(OK, body, "application/json");
-    write(client_socket, response, strlen(response));
+    size_t w = write(client_socket, response, strlen(response));
+    (void)w;
     free(response);
     free(body);
   }
 
-  if (strncmp(buffer, "GET /user ", 10) == 0) {
+  else if (strncmp(buffer, "GET /user ", 10) == 0) {
 
     const char body[] =
         "{\"Name\": \"Matheus\", \"Age\": 25, \"Favorite language\": \"C\"}\n";
     char *response = http_response(OK, body, "application/json");
-    write(client_socket, response, strlen(response));
+    size_t w = write(client_socket, response, strlen(response));
+    (void)w;
     free(response);
 
   } else {
@@ -41,7 +49,8 @@ void handle_client(int client_socket, clock_t timer) {
                            "Content-Length: 10\r\n"
                            "\r\n"
                            "Not Found\n";
-    write(client_socket, response, strlen(response));
+    size_t w = write(client_socket, response, strlen(response));
+    (void)w;
   }
 
   close(client_socket);
