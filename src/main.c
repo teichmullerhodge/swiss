@@ -78,7 +78,7 @@ int main() {
     exit(EXIT_FAILURE);
   }
 
-  printf("Servidor rodando em http://localhost:%d\n", PORT);
+  printf("SERVER runnint at http://localhost:%d\n", PORT);
 
   while (1) {
     client_socket = accept(server_fd, (struct sockaddr *)&address, &addrlen);
