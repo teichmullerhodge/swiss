@@ -1,10 +1,10 @@
 import matplotlib.pyplot as plt
 # Dados atualizados
 langs = ['C', 'Node.js', 'Python']
-rps = [10140.03, 5244.97, 4368.66]
-mean_time = [9.862, 19.066, 22.890]
-max_time = [5, 36, 26]
-transfer = [1237.80, 655.62, 546.08]
+rps = [10384.67, 6572.11, 9940.31]
+mean_time = [9.630, 15.216, 10.060]
+max_time = [11, 37, 12]
+transfer = [1298.08, 821.51, 1242.54]
 falhas = [0, 0, 0]
 
 # Estilo geral

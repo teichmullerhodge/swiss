@@ -4,11 +4,15 @@ from threading import Thread
 HOST = 'localhost'
 PORT = 9002
 
+NAME = "Matheus"
+LANG = "C"
+AGE = 25
+
 def handle_client(conn):
     request = conn.recv(4096).decode()
 
     if request.startswith("GET /user"):
-        body = '{"Name": "Matheus", "Age": 25, "Favorite language": "C"}\n'
+        body = f'{{"Name": "{NAME}", "Age": {AGE}, "Favorite language": "{LANG}"}}\n'
     elif request.startswith("GET /status"):
         body = '{"Status": true, "Uptime": 0.0}\n'
     else:
@@ -30,7 +34,6 @@ def start_server():
 
     while True:
         conn, _ = server.accept()
-        Thread(target=handle_client, args=(conn,)).start()
-
+        handle_client(conn)
 if __name__ == "__main__":
     start_server()

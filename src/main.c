@@ -36,13 +36,21 @@ void handle_client(int client_socket, clock_t timer) {
 
   else if (strncmp(buffer, "GET /user ", 10) == 0) {
 
-    const char body[] =
-        "{\"Name\": \"Matheus\", \"Age\": 25, \"Favorite language\": \"C\"}\n";
-    char *response = http_response(OK, body, "application/json");
-    size_t w = write(client_socket, response, strlen(response));
-    (void)w;
-    free(response);
+    char response[2048]; // grande, mas cabe na stack
+    const char *name = "Matheus";
+    const char *lang = "C";
+    int age = 25;
+    int len = sprintf(
+        response,
+        "HTTP/1.1 200 OK\r\n"
+        "Content-Length: %ld\r\n"
+        "Content-Type: application/json\r\n"
+        "\r\n"
+        "{\"Name\": \"%s\", \"Age\": %d, \"Favorite language\": \"%s\"}\n",
+        47 + strlen(name) + strlen(lang), name, age, lang);
 
+    size_t _ = write(client_socket, response, len);
+    (void)_;
   } else {
     const char *response = "HTTP/1.1 404 Not Found\r\n"
                            "Content-Type: text/plain\r\n"
@@ -82,7 +90,7 @@ int main() {
     exit(EXIT_FAILURE);
   }
 
-  if (listen(server_fd, 10) < 0) {
+  if (listen(server_fd, 100) < 0) {
     perror("Listen failed");
     exit(EXIT_FAILURE);
   }
